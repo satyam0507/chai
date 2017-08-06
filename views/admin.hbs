@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-xs-12 col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-img-top nv-top">
+                <span class="pr-3 mr-3">is Order Session active or inactive ??</span>
+                <label class="label-switch switch-primary mb-0" style="height: 20px;">
+            <input type="checkbox" class="switch switch-bootstrap status" name="status" id="status" value="1">
+            <span class="lable"></span></label>
+            </div>
+            <div class="card-block">
+                <form id="js-admin-form" class="hidden">
+                    <div class="form-group">
+                        <label for="orderType">Select Session</label>
+                        <select class="form-control" id="orderType">
+                        <option value="morning">Morning</option>
+                        <option value="evening">Evening</option>
+                    </select>
+                    </div>
+                    <label>Items to be ordered</label>
+                </form>
+                <div id="js-save-container" class="hidden">
+                    <a href="#" id="js-save" class="btn btn-primary ">Save</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

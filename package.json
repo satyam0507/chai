@@ -1,0 +1,25 @@
+{
+  "name": "chai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/satyam0507/chai.git"
+  },
+  "author": "satyam singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/satyam0507/chai/issues"
+  },
+  "homepage": "https://github.com/satyam0507/chai#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.15.0",
+    "express-handlebars": "^3.0.0",
+    "firebase-admin": "^5.1.0"
+  }
+}

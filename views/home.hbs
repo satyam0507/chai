@@ -1,0 +1,97 @@
+<style>
+    .nv-item img {
+        height: 100px;
+        width: 100px;
+        pointer-events: none;
+    }
+
+    [data-draggable="target"] {
+        display: flex;
+        list-style-type: none;
+        width: 100%;
+        min-height: 400px;
+        overflow-y: auto;
+        margin: 0 0.5em 0.5em 0;
+        border: 2px solid #888;
+        border-radius: 0.2em;
+        background: #ddd;
+    }
+    /* drop target state */
+
+    [data-draggable="target"][aria-dropeffect="move"] {
+        border-color: #68b;
+        background: #fff;
+    }
+    /* drop target focus and dragover state */
+
+    [data-draggable="target"][aria-dropeffect="move"]:focus,
+    [data-draggable="target"][aria-dropeffect="move"].dragover {
+        outline: none;
+        box-shadow: 0 0 0 1px #fff, 0 0 0 3px #68b;
+    }
+    /* draggable items */
+
+    [data-draggable="item"] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        list-style-type: none;
+
+        margin: 0 0 2px 0;
+        padding: 0.2em 0.4em;
+
+        border-radius: 0.2em;
+
+        line-height: 1.3;
+    }
+    /* items focus state */
+
+    [data-draggable="item"]:focus {
+        outline: none;
+
+        box-shadow: 0 0 0 2px #68b, inset 0 0 0 1px #ddd;
+    }
+    /* items grabbed state */
+
+    [data-draggable="item"][aria-grabbed="true"] {
+        background: #8ad;
+        color: #fff;
+    }
+</style>
+{{!-- <div class="row" style="display:flex;justify-content:center;align-items:center">
+    <div class="col-xs-12">
+        <div class="js-liveUpdate mx-2 my-3">
+            <p>Total order</p>
+        </div>
+    </div>
+</div> --}}
+<div class="row">
+    <div class="col-xs-12 col-md-6 offset">
+        <div class="card px-0 py-0">
+            <div class="card-img-top nv-top--home px-3">
+                <span class="pr-3 mr-3">Items Available in Bucket</span>
+            </div>
+            <div class="card-block">
+                <ol data-draggable="target" class="js-bucket">
+                    {{!--
+                    <li data-draggable="item" class="nv-item"> <img src="/static/image/tea.png" alt="tea"> </li>
+                    <li data-draggable="item" class="nv-item"> <img src="/static/image/coffee.png" alt="coffee"></li>
+                    <li data-draggable="item" class="nv-item"> <img src="/static/image/Samosa.png" alt="samosa"></li>
+                    <li data-draggable="item" class="nv-item"> <img src="/static/image/breadPakoda.png" alt="breadPakoda"></li> --}}
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <div class="card px-0 py-0">
+            <div class="card-img-top nv-top--home px-3">
+                <span class="pr-3 mr-3">Items You Have Selected</span>
+                <a href="#" id="js-order" class="btn btn-primary hidden ">Order</a>
+            </div>
+            <div class="card-block">
+                <ol data-draggable="target" class="js-plate">
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>

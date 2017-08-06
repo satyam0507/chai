@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/app.css">
+</head>
+
+<body>
+    <style>
+        {
+            {
+                !--body {
+                    min-height: 300vh;
+                }
+                --
+            }
+        }
+
+        .box-shadow {
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, .6);
+        }
+
+        .model-userInfo-container {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: pink;
+            opacity: .3;
+            z-index: 1;
+        }
+
+        .model-userInfo {
+            box-shadow: 0px 3px 4px rgba(0, 0, 0, .6);
+            position: fixed;
+            right: 20px;
+            z-index: 3;
+            min-width: 400px;
+            top: 56px;
+        }
+
+        #userInfo {
+            min-width: 40px;
+            height: 40px;
+            margin-right: 20px;
+        }
+
+        .userInfoComman {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+        }
+
+        .css-userImage {
+
+            border-radius: 50%;
+        }
+
+        .userImageNav {
+            height: 40px;
+            min-width: 40px;
+        }
+
+        .userImageModel {
+            height: 100px;
+            min-width: 100px;
+        }
+
+        .nv-avatar {
+            width: 100px;
+            height: 100px;
+        }
+
+        .center {
+            align-items: center;
+        }
+
+        .middle {
+            justify-content: center;
+        }
+
+        .hidden {
+            display: none!important;
+        }
+
+        .hide {
+            display: none!important;
+        }
+
+        .nv-card-head {
+            min-height: 50px;
+            background: rgba(0, 0, 0, .1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nv-card-body {
+            min-height: 120px;
+        }
+
+        .nv-card-footer {
+            min-height: 50px;
+            background: rgba(0, 0, 0, .1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .nv-userInfo>*:empty {
+            background: rgba(0, 0, 0, .5);
+            border-radius: 3px;
+            min-height: 30px;
+        }
+    </style>
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded box-shadow fixed-top ">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+        <a class="navbar-brand mr-0" href="#"><img class="userImageNav" src="/static/image/logo.svg" alt="logo"></a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Chai</a>
+                </li>
+            </ul>
+            <div class="navbar-nav w-100">
+                <div class="row w-100" style="display:flex;justify-content:center;align-items:center">
+                    <div class="col-xs-12">
+                        <div class="js-liveUpdate">
+                             {{#if home}}
+                                <p>You have ordered</p>
+                            {{/if}}
+                            {{#if admin}}
+                                <p>Total order</p>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-nav userInfo center">
+                <a href="#" id="js-userInfo">
+                    <div class="nav-item d-flex center middle userInfoComman" id="userInfo">
+                        <img src="/static/image/avatar.png" class="css-userImage js-userImage userImageNav">
+                    </div>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class=" col-xs-12 col-sm-4 px-0 ">
+        <div class="model-userInfo hidden mt-2 card">
+            <div class="nv-card-head px-2">
+                <h6 class="card-subtitle">hi</h6>
+            </div>
+            <div class="card-block py-0 mt-2">
+                <div class="nv-card-body row mb-2">
+                    <div class="col-4">
+                        <div class="nv-avatar userInfoComman">
+                            <img src="/static/image/avatar.png" class="css-userImage js-userImage userImageModel">
+                        </div>
+                    </div>
+                    <div class="nv-userInfo col-8 px-0 py-0">
+                        <div class="js-userName text-center my-1"></div>
+                        <div class="js-userEmail text-center my-1"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="nv-card-footer text-right">
+                <a href="#" class="card-link btn btn-primary signUp mx-2">singin</a>
+            </div>
+        </div>
+    </div>
+    <div class="alert nv-alert text-center js-alert" role="alert" style="margin-top:70px">
+    </div>
+    <div class="container-fluid " style="margin-top:100px">
+        <div class="hidden" id="js-main-view">
+            {{{body}}}
+        </div>
+    </div>
+
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+
+    <script src="https://use.fontawesome.com/37ed08f604.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.0/firebase.js"></script>
+    <script src="/static/js/auth.js"></script>
+    {{!--
+    <script src="/bower_components/timeme.js/timeme.js"></script>--}} {{!--
+    <script type="text/javascript">
+        TimeMe.initialize({
+            currentPageName: location.href, // current page
+            idleTimeoutInSeconds: 30 // seconds
+        });
+    </script>--}} {{!--
+    <script src="/static/js/abTest.js"></script> --}} {{#if home}}
+    <script src="/static/js/home.js"></script>
+    {{/if}} {{#if admin}}
+    <script src="/static/js/admin.js"></script>
+    {{/if}}
+</body>
+
+</html>
