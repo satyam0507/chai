@@ -3,6 +3,7 @@ var targets;
 var items;
 var itemsToAdd;
 var orderType;
+var orderDate;
 var orderEl = document.querySelector('#js-order');
 
 //dictionary for storing the selections data 
@@ -484,13 +485,14 @@ function init() {
             evt.preventDefault();
             firebase.database().ref('/adminAccess').once('value', function(snapShot) {
                 var snapShotData = snapShot.val();
+                
                 if (snapShotData.orderSession) {
-                    var dateObj = new Date();
-                    var month = dateObj.getUTCMonth() + 1; //months from 1-12
-                    var day = dateObj.getUTCDate();
-                    var year = dateObj.getUTCFullYear();
+                    // var dateObj = new Date();
+                    // var month = dateObj.getUTCMonth() + 1; //months from 1-12
+                    // var day = dateObj.getUTCDate();
+                    // var year = dateObj.getUTCFullYear();
 
-                    newdate = year + "-" + month + "-" + day;
+                    // newdate = year + "-" + month + "-" + day;
                     var obj = {}
                     Object.keys(itemsToAdd).forEach(function(item) {
                         var allSelected = document.querySelectorAll('.js-plate li.' + item);
@@ -504,9 +506,9 @@ function init() {
                     });
                     currentuser = firebase.auth().currentUser;
                     if (obj && typeof obj === 'object' && Object.keys(obj).length > 0) {
-                        if (newdate && orderType) {
+                        if (orderDate && orderType) {
                             if (currentuser && currentuser.uid) {
-                                firebase.database().ref().child('/orderList/' + newdate + '/' + orderType + '/' + currentuser.uid).set(obj).then(function(res) {
+                                firebase.database().ref().child('/orderList/' + orderDate + '/' + orderType + '/' + currentuser.uid).set(obj).then(function(res) {
                                     var jsBucketEl = document.querySelector('.js-bucket');
                                     if (jsBucketEl) {
                                         removeBucket();
@@ -544,6 +546,7 @@ firebase.auth().onAuthStateChanged(function(user) {
             var databaseData = snapShot.val();
             itemsToAdd = databaseData.itemsToOrder;
             orderType = databaseData.orderType;
+            orderDate = databaseData.orderDate;
             var jsBucketEl = document.querySelector('.js-bucket');
             var liveUpdateEl = document.querySelector('.js-liveUpdate');
             if (databaseData.orderSession) {
@@ -568,15 +571,15 @@ firebase.auth().onAuthStateChanged(function(user) {
                         }
                     });
                 }
-                var dateObj = new Date();
-                var month = dateObj.getUTCMonth() + 1; //months from 1-12
-                var day = dateObj.getUTCDate();
-                var year = dateObj.getUTCFullYear();
+                // var dateObj = new Date();
+                // var month = dateObj.getUTCMonth() + 1; //months from 1-12
+                // var day = dateObj.getUTCDate();
+                // var year = dateObj.getUTCFullYear();
 
-                newdate = year + "-" + month + "-" + day;
+                // newdate = year + "-" + month + "-" + day;
                 currentuser = firebase.auth().currentUser;
 
-                firebase.database().ref().child('/orderList/' + newdate + '/' + orderType + '/' + currentuser.uid).once('value', function(snapShot) {
+                firebase.database().ref().child('/orderList/' + orderDate + '/' + orderType + '/' + currentuser.uid).once('value', function(snapShot) {
                     var totalCount = snapShot.val();
                     updateTotalCount(totalCount, true);
                     addcloudFunction();
@@ -606,14 +609,14 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 function addcloudFunction() {
-    var dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1; //months from 1-12
-    var day = dateObj.getUTCDate();
-    var year = dateObj.getUTCFullYear();
+    // var dateObj = new Date();
+    // var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    // var day = dateObj.getUTCDate();
+    // var year = dateObj.getUTCFullYear();
 
-    newdate = year + "-" + month + "-" + day;
+    // newdate = year + "-" + month + "-" + day;
     currentuser = firebase.auth().currentUser;
-    firebase.database().ref().child('/orderList/' + newdate + '/' + orderType + '/' + currentuser.uid).on('value', function(childSnapshot) {
+    firebase.database().ref().child('/orderList/' + orderDate + '/' + orderType + '/' + currentuser.uid).on('value', function(childSnapshot) {
         var data = childSnapshot.val();
         console.log(data);
         updateTotalCount(data);

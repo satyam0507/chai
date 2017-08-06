@@ -1,10 +1,12 @@
 var items;
 var itemsToAdd;
 var orderType;
+var orderDate;
 firebase.database().ref('/adminAccess').once('value', function(snapShot) {
     var dataBaseValue = snapShot.val();
     itemsToAdd = dataBaseValue.itemsToOrder;
     orderType = dataBaseValue.orderType;
+    orderDate = dataBaseValue.orderDate;
     if (dataBaseValue) {
         var formEl = document.querySelector('#js-admin-form');
         var statusEl = document.querySelector('#status');
@@ -98,9 +100,16 @@ var saveBtn = document.querySelector('#js-save');
 if (saveBtn) {
     saveBtn.addEventListener('click', function(evt) {
         evt.preventDefault();
+        var dateObj = new Date();
+        var month = dateObj.getUTCMonth() + 1; //months from 1-12
+        var day = dateObj.getUTCDate();
+        var year = dateObj.getUTCFullYear();
+        var newdate = year + "-" + month + "-" + day;
+
         var obj = {
             orderSession: document.querySelector('#status:checked') ? true : false,
             orderType: document.querySelector('#orderType') ? document.querySelector('#orderType').value : '',
+            orderDate: newdate,
             itemsToOrder: {}
         }
         Object.keys(items).forEach(function(item) {
