@@ -482,42 +482,58 @@ function init() {
     if (orderEl) {
         orderEl.addEventListener('click', function(evt) {
             evt.preventDefault();
-            var dateObj = new Date();
-            var month = dateObj.getUTCMonth() + 1; //months from 1-12
-            var day = dateObj.getUTCDate();
-            var year = dateObj.getUTCFullYear();
+            firebase.database().ref('/adminAccess').once('value', function(snapShot) {
+                var snapShotData = snapShot.val();
+                if (snapShotData.orderSession) {
+                    var dateObj = new Date();
+                    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+                    var day = dateObj.getUTCDate();
+                    var year = dateObj.getUTCFullYear();
 
-            newdate = year + "-" + month + "-" + day;
-            var obj = {}
-            Object.keys(itemsToAdd).forEach(function(item) {
-                var allSelected = document.querySelectorAll('.js-plate li.' + item);
-                if (allSelected && allSelected.length > 0) {
-                    obj[item] = {}
-                    obj[item]['value'] = allSelected.length
-                } else {
-                    obj[item] = {};
-                    obj[item]['value'] = 0;
-                }
-            });
-            currentuser = firebase.auth().currentUser;
-            if (obj && typeof obj === 'object' && Object.keys(obj).length > 0) {
-                if (newdate && orderType) {
-                    if (currentuser && currentuser.uid) {
-                        firebase.database().ref().child('/orderList/' + newdate + '/' + orderType + '/' + currentuser.uid).set(obj).then(function(res) {
-                            showMsg('success', 'order placed', 5000);
-                        }).catch(function(err) {
-                            showMsg('error', err.message, 5000);
-                        })
+                    newdate = year + "-" + month + "-" + day;
+                    var obj = {}
+                    Object.keys(itemsToAdd).forEach(function(item) {
+                        var allSelected = document.querySelectorAll('.js-plate li.' + item);
+                        if (allSelected && allSelected.length > 0) {
+                            obj[item] = {}
+                            obj[item]['value'] = allSelected.length
+                        } else {
+                            obj[item] = {};
+                            obj[item]['value'] = 0;
+                        }
+                    });
+                    currentuser = firebase.auth().currentUser;
+                    if (obj && typeof obj === 'object' && Object.keys(obj).length > 0) {
+                        if (newdate && orderType) {
+                            if (currentuser && currentuser.uid) {
+                                firebase.database().ref().child('/orderList/' + newdate + '/' + orderType + '/' + currentuser.uid).set(obj).then(function(res) {
+                                    var jsBucketEl = document.querySelector('.js-bucket');
+                                    if (jsBucketEl) {
+                                        removeBucket();
+                                        addItemInBucket(jsBucketEl, itemsToAdd, true);
+                                    }
+                                    showMsg('success', 'order placed', 5000);
+                                }).catch(function(err) {
+                                    showMsg('error', err.message, 5000);
+                                })
+                            } else {
+                                showMsg('error', 'Please Login to order', 3000);
+                            }
+                        } else {
+                            showMsg('error', 'Some thing went wrong', 5000);
+                        }
+
                     } else {
-                        showMsg('error', 'Please Login to order', 3000);
+                        showMsg('error', 'Please select some item from the bucket', 5000);
                     }
-                } else {
-                    showMsg('error', 'Some thing went wrong', 5000);
+                }else{
+                     showMsg('error', 'Order Session expired',8000);
                 }
+            }, function(err) {
+                console.log(err);
+                showMsg('error', err.message);
+            })
 
-            } else {
-                showMsg('error', 'Please select some item from the bucket', 5000);
-            }
         });
     }
 }
@@ -562,27 +578,13 @@ firebase.auth().onAuthStateChanged(function(user) {
 
                 firebase.database().ref().child('/orderList/' + newdate + '/' + orderType + '/' + currentuser.uid).once('value', function(snapShot) {
                     var totalCount = snapShot.val();
-                    updateTotalCount(totalCount,true);
+                    updateTotalCount(totalCount, true);
                     addcloudFunction();
                 }, function(err) {
                     console.log(err);
                 })
                 if (jsBucketEl) {
-                    Object.keys(itemsToAdd).forEach(function(item) {
-                        if (itemsToAdd[item]) {
-                            var liEl = document.createElement('li');
-                            liEl.setAttribute('data-draggable', 'item');
-                            liEl.classList.add('nv-item');
-                            liEl.classList.add(item);
-
-                            var imageEl = document.createElement('img');
-                            imageEl.setAttribute('src', '/static/image/' + item + '.png');
-                            imageEl.setAttribute('alt', item);
-                            liEl.appendChild(imageEl);
-                            jsBucketEl.appendChild(liEl);
-                        }
-                    });
-
+                    addItemInBucket(jsBucketEl, itemsToAdd)
                     init();
                     if (orderEl) {
                         orderEl.classList.remove('hidden');
@@ -592,10 +594,11 @@ firebase.auth().onAuthStateChanged(function(user) {
                 }
 
             } else {
-                showMsg('error', 'We are not accepting order yet');
+                hideMainView();
+                showMsg('error', 'We are not accepting order yet Please Refresh or contect Admin');
             }
         });
-    }else{
+    } else {
         removeLiveUpdate();
         removeBucket();
         removePlate();
@@ -617,23 +620,45 @@ function addcloudFunction() {
     });
 }
 
-function removeLiveUpdate(){
-            var liveUpdateEl = document.querySelector('.js-liveUpdate');
-            if(liveUpdateEl){
-                liveUpdateEl.innerHTML = null;
-            }
+function removeLiveUpdate() {
+    var liveUpdateEl = document.querySelector('.js-liveUpdate');
+    if (liveUpdateEl) {
+        liveUpdateEl.innerHTML = null;
+    }
 }
 
-function removeBucket(){
+function removeBucket() {
     var jsBucketEl = document.querySelector('.js-bucket');
-    if(jsBucketEl){
+    if (jsBucketEl) {
         jsBucketEl.innerHTML = null;
     }
 }
 
-function removePlate(){
-     var jsPlate = document.querySelector('.js-plate');
-    if(jsPlate){
+function removePlate() {
+    var jsPlate = document.querySelector('.js-plate');
+    if (jsPlate) {
         jsPlate.innerHTML = null;
     }
+}
+
+function addItemInBucket(jsBucketEl, itemsToAdd, afterinit) {
+    Object.keys(itemsToAdd).forEach(function(item) {
+        if (itemsToAdd[item]) {
+            var liEl = document.createElement('li');
+            liEl.setAttribute('data-draggable', 'item');
+            liEl.classList.add('nv-item');
+            liEl.classList.add(item);
+            if (afterinit) {
+                liEl.setAttribute('draggable', true);
+                liEl.setAttribute('aria-grabbed', false);
+                liEl.setAttribute('tabindex', 0);
+            }
+
+            var imageEl = document.createElement('img');
+            imageEl.setAttribute('src', '/static/image/' + item + '.png');
+            imageEl.setAttribute('alt', item);
+            liEl.appendChild(imageEl);
+            jsBucketEl.appendChild(liEl);
+        }
+    });
 }

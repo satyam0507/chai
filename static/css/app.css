@@ -41,7 +41,7 @@
 
 .nv-alert {
     position: fixed;
-    background: pink;
+    /* background: pink; */
     width: 300px;
     height: 100px;
     will-change: transform;

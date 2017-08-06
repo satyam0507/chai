@@ -6,7 +6,7 @@
     }
 
     [data-draggable="target"] {
-        display: flex;
+        display: block;
         list-style-type: none;
         width: 100%;
         min-height: 400px;
@@ -32,7 +32,7 @@
     /* draggable items */
 
     [data-draggable="item"] {
-        display: flex;
+        display: inline-block;
         align-items: center;
         justify-content: center;
         list-style-type: none;
@@ -58,13 +58,7 @@
         color: #fff;
     }
 </style>
-{{!-- <div class="row" style="display:flex;justify-content:center;align-items:center">
-    <div class="col-xs-12">
-        <div class="js-liveUpdate mx-2 my-3">
-            <p>Total order</p>
-        </div>
-    </div>
-</div> --}}
+
 <div class="row">
     <div class="col-xs-12 col-md-6 offset">
         <div class="card px-0 py-0">
@@ -73,11 +67,6 @@
             </div>
             <div class="card-block">
                 <ol data-draggable="target" class="js-bucket">
-                    {{!--
-                    <li data-draggable="item" class="nv-item"> <img src="/static/image/tea.png" alt="tea"> </li>
-                    <li data-draggable="item" class="nv-item"> <img src="/static/image/coffee.png" alt="coffee"></li>
-                    <li data-draggable="item" class="nv-item"> <img src="/static/image/Samosa.png" alt="samosa"></li>
-                    <li data-draggable="item" class="nv-item"> <img src="/static/image/breadPakoda.png" alt="breadPakoda"></li> --}}
                 </ol>
             </div>
         </div>
