@@ -91,7 +91,51 @@ firebase.database().ref('/adminAccess').once('value', function(snapShot) {
         firebase.database().ref().child('/totalOrder/' + orderType).once('value', function(snapShot) {
             var totalCount = snapShot.val();
             updateTotalCount(totalCount);
-        })
+        });
+
+        firebase.database().ref('/totalOrder').on('child_changed', function(childSnapshot, prevChildKey) {
+            var data = childSnapshot.val();
+            console.log(data);
+            updateTotalCount(data);
+        });
+
+        firebase.database().ref('/orderList/' + orderDate + '/' + orderType).on('child_changed', function(childSnapshot, prevChildKey) {
+            var data = childSnapshot.val();
+            var key = childSnapshot.key;
+                console.log(data);
+                var updateData = {
+                    key:key,
+                    orderData:(function(data){
+                        var retObj = {};
+                        Object.keys(data).forEach(function(key){
+                            retObj[key] = data[key].value;
+                        });
+                        return retObj;
+                    })(data)
+                }
+                updatePerUserData(updateData);
+        });
+
+        firebase.database().ref('/orderList/' + orderDate + '/' + orderType).on('child_added', function(childSnapshot, prevChildKey) {
+            var data = childSnapshot.val();
+            var key = childSnapshot.key;
+            firebase.database().ref('/users/' + key + '/profile').once('value', function(profileSpan) {
+                var profileData = profileSpan.val();
+                var userData = {
+                    key:key,
+                    name:profileData.name,
+                    email:profileData.email,
+                    orderData:(function(data){
+                        var retObj = {};
+                        Object.keys(data).forEach(function(key){
+                            retObj[key] = data[key].value;
+                        });
+                        return retObj;
+                    })(data)
+                }
+                addPerUserData(userData);
+            });
+        });
 
     }
 });
@@ -123,8 +167,60 @@ if (saveBtn) {
     })
 }
 
-firebase.database().ref('/totalOrder').on('child_changed', function(childSnapshot, prevChildKey) {
-    var data = childSnapshot.val();
-    console.log(data);
-    updateTotalCount(data);
-});
+
+function addPerUserData(obj){
+    var tbodyEl = document.querySelector('tbody.js-perUser');
+    if(tbodyEl){
+        var trEl = document.createElement('tr');
+        trEl.setAttribute('id','nv_'+obj.key);
+
+        var tdName = document.createElement('td')
+        tdName.classList.add('name');
+        tdName.innerText = obj.name;
+
+        var tdEmail = document.createElement('td');
+        tdEmail.classList.add('email');
+        tdEmail.innerText = obj.email;
+
+        var tdValue = document.createElement('td');
+        tdValue.classList.add('orderData');
+        tdValue.innerText = JSON.stringify(obj.orderData);
+
+        trEl.appendChild(tdName);
+        trEl.appendChild(tdEmail);
+        trEl.appendChild(tdValue);
+
+        tbodyEl.appendChild(trEl);
+        orderAdded('nv_'+obj.key);
+    }
+}
+
+function updatePerUserData(obj){
+    var orderDataEl = document.querySelector('#nv_'+obj.key+' td.orderData');
+    if(orderDataEl){
+        orderDataEl.innerText = JSON.stringify(obj.orderData);
+    }
+    valueChange('#nv_'+obj.key);
+}
+
+function valueChange(selector){
+    var el = document.querySelector(selector);
+    if(el){
+        el.classList.add('valueChange');
+        setTimeout(function(){
+            var el = document.querySelector(selector);
+            el.classList.remove('valueChange');
+        },3000);
+    }
+}
+
+function orderAdded(selector){
+    var el = document.querySelector('#'+selector);
+    if(el){
+        el.classList.add('orderAdded');
+        setTimeout(function(){
+            var el = document.querySelector('#'+selector);
+            el.classList.remove('orderAdded');
+        },3000);
+    }
+}

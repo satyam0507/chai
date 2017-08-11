@@ -232,3 +232,10 @@
 .nv-badge:not(:last-child){
     margin-right: 20px;
 }
+
+.valueChange{
+    background: #fdcb85!important;
+}
+.orderAdded{
+    background: #c6fbc6!important;
+}
