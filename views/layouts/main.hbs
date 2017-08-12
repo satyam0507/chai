@@ -53,18 +53,23 @@
             opacity: .3;
             z-index: 1;
         }
-
+    @media (max-width:991px){
+        .model-userInfo{
+            right:0!important;
+            width: 100vw!important;
+        }
+    }
         .model-userInfo {
             box-shadow: 0px 3px 4px rgba(0, 0, 0, .6);
             position: fixed;
             right: 20px;
             z-index: 3;
-            min-width: 400px;
+            width: 400px;
             top: 56px;
         }
 
         #userInfo {
-            min-width: 40px;
+            width: 40px;
             height: 40px;
             margin-right: 20px;
         }
@@ -136,18 +141,12 @@
             min-height: 30px;
         }
     </style>
-    <nav class="navbar navbar-toggleable-md navbar-light bg-faded box-shadow fixed-top ">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-            aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-        <a class="navbar-brand mr-0" href="/"><img class="userImageNav" src="/static/image/logo.svg" alt="logo"></a>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Chai</a>
-                </li>
-            </ul>
+    <nav class="navbar center navbar-light bg-faded box-shadow fixed-top ">
+        <button class="js-menu-show navbar-toggler navbar-toggler-right hidden-md-up" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand mr-0" href="/"><img class="userImageNav" src="/static/image/logo.svg" alt="logo">Chai</a>
+        <div id="navbarNav" class="hidden-md-down d-inline-flex w-100">
             <div class="navbar-nav w-100">
                 <div class="row w-100" style="display:flex;justify-content:center;align-items:center">
                     <div class="col-xs-12">
@@ -162,7 +161,7 @@
                 </div>
             </div>
             <div class="navbar-nav userInfo center">
-                <a href="#" id="js-userInfo">
+                <a href="#" class="js-userInfo">
                     <div class="nav-item d-flex center middle userInfoComman" id="userInfo">
                         <img src="/static/image/avatar.png" class="css-userImage js-userImage userImageNav">
                     </div>
@@ -170,6 +169,27 @@
             </div>
         </div>
     </nav>
+    <div class="side-nav js-side-nav hidden-md-up">
+        <div class="open side-nav__container js-side-nav-container">
+            <div class="sideNav-Header navbar navbar-light d-flex">
+                <div class="headerLogo w-100">
+                    <a class="navbar-brand mr-0" href="/"><img class="userImageNav" src="/static/image/logo.svg" alt="logo">Chai</a>
+                </div>
+                <div class="js-menu-hide hidden-md-up">
+                    <i class="fa fa-times " aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="sideNav-body">
+                <div class=" userInfo center">
+                    <a href="#" class="js-userInfo">
+                        <div class="nav-item d-flex center middle userInfoComman js-menu-hide" id="userInfo">
+                            <img src="/static/image/avatar.png" class="css-userImage js-userImage userImageNav">
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class=" col-xs-12 col-sm-4 px-0 ">
         <div class="model-userInfo hidden mt-2 card">
             <div class="nv-card-head px-2">
@@ -214,6 +234,7 @@
     <script src="https://use.fontawesome.com/37ed08f604.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.0/firebase.js"></script>
     <script src="/static/js/auth.js"></script>
+    <script src="/static/js/sidenav.js"></script>
     {{!--
     <script src="/bower_components/timeme.js/timeme.js"></script>--}} {{!--
     <script type="text/javascript">
@@ -228,20 +249,19 @@
     <script src="/static/js/admin.js"></script>
     {{/if}}
     <script>
-           (function (n, o, t, i, f, y) {
-               n[i] = function () {
-                   (n[i].q = n[i].q || []).push(arguments)
-               };
-               n[i].l = new Date;
-               n[t] = {};
-               n[t].auth = { bid_e : '1A05A95810F932A7D8738FAA0876DE25', bid : '1295', t : '420'};
-               n[t].async = false;
-               (y = o.createElement('script')).type = 'text/javascript';
-               y.src = "https://devheat.notifyvisitors.com/js/unminified/notify-visitors-heatmap-2.0.js";
-               (f = o.getElementsByTagName('script')[0]).parentNode.insertBefore(y, f);
-           })(window, document, '_nv_hm', 'nvheat');
-       
-        </script>
+        (function(n, o, t, i, f, y) {
+            n[i] = function() {
+                (n[i].q = n[i].q || []).push(arguments)
+            };
+            n[i].l = new Date;
+            n[t] = {};
+            n[t].auth = { bid_e: '1A05A95810F932A7D8738FAA0876DE25', bid: '1295', t: '420' };
+            n[t].async = false;
+            (y = o.createElement('script')).type = 'text/javascript';
+            y.src = "https://devheat.notifyvisitors.com/js/unminified/notify-visitors-heatmap-2.0.js";
+            (f = o.getElementsByTagName('script')[0]).parentNode.insertBefore(y, f);
+        })(window, document, '_nv_hm', 'nvheat');
+    </script>
 </body>
 
 </html>

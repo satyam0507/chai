@@ -13,16 +13,19 @@ var logedIn;
 
 
 const signUpEl = document.querySelectorAll('.signUp');
-const logBtnEl = document.getElementById('js-userInfo');
+const logBtnElArray = document.querySelectorAll('.js-userInfo');
 const mainView = document.querySelector('#js-main-view');
-if (logBtnEl) {
-    logBtnEl.addEventListener('click', function(evt) {
-        evt.preventDefault();
-        const logModelEl = document.querySelector('.model-userInfo');
-        if (logModelEl) {
-            logModelEl.classList.toggle('hidden');
-        }
+if (logBtnElArray && logBtnElArray.length > 0) {
+    logBtnElArray.forEach(function(logBtnEl) {
+        logBtnEl.addEventListener('click', function(evt) {
+            evt.preventDefault();
+            const logModelEl = document.querySelector('.model-userInfo');
+            if (logModelEl) {
+                logModelEl.classList.toggle('hidden');
+            }
+        });
     })
+
 
 }
 
@@ -56,8 +59,8 @@ function loggedIn() {
         // this value to authenticate with your backend server, if
         // you have one. Use User.getToken() instead.
     }
-    var userInfoEl = document.getElementById('userInfo');
-    if (userInfoEl) {
+    var userInfoEl = document.querySelectorAll('.userInfo');
+    if (userInfoEl && userInfoEl.length > 0) {
         var userIamgeEl = document.querySelectorAll('.js-userImage');
         var userNameEl = document.querySelectorAll('.js-userName');
         var userEmailEl = document.querySelectorAll('.js-userEmail');
@@ -82,9 +85,9 @@ function loggedIn() {
 }
 
 function loggedOut() {
-    var userInfoEl = document.getElementById('userInfo');
+    var userInfoEl = document.querySelectorAll('.userInfo');
     hideMainView();
-    if (userInfoEl) {
+    if (userInfoEl && userInfoEl.length > 0) {
         var userIamgeEl = document.querySelectorAll('.js-userImage');
         var userNameEl = document.querySelectorAll('.js-userName');
         var userEmailEl = document.querySelectorAll('.js-userEmail');
@@ -271,9 +274,9 @@ function addItemInPlate(item, total) {
                 liEl.setAttribute('data-draggable', 'item');
                 liEl.classList.add('nv-item');
                 liEl.classList.add(item);
-                liEl.setAttribute('draggable',true);
-                liEl.setAttribute('aria-grabbed',false);
-                liEl.setAttribute('tabindex',0);
+                liEl.setAttribute('draggable', true);
+                liEl.setAttribute('aria-grabbed', false);
+                liEl.setAttribute('tabindex', 0);
 
                 var imageEl = document.createElement('img');
                 imageEl.setAttribute('src', '/static/image/' + item + '.png');
